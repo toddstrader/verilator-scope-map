@@ -32,16 +32,6 @@
 
 #include <map>
 
-//======================================================================
-// Types
-
-struct VerilatedCStrCmp {
-    /// Ordering maps keyed by const char*'s
-    bool operator() (const char *a, const char *b) const {
-	return std::strcmp(a, b) < 0;
-    }
-};
-
 //===========================================================================
 /// Verilator range
 

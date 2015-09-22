@@ -37,6 +37,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
+#include <map>
 // <iostream> avoided to reduce compile time
 // <string> avoided and instead in verilated_heavy.h to reduce compile time
 using namespace std;
@@ -213,6 +214,15 @@ public:  // But internals only - called from VerilatedModule's
     }
 };
 
+struct VerilatedCStrCmp {
+    /// Ordering maps keyed by const char*'s
+    bool operator() (const char *a, const char *b) const {
+	return std::strcmp(a, b) < 0;
+    }
+};
+
+typedef map<const char*, const VerilatedScope*, VerilatedCStrCmp>  VerilatedScopeNameMap;
+
 //===========================================================================
 /// Verilator global static information class
 
@@ -308,6 +318,7 @@ public:
     static const char* catName(const char* n1, const char* n2); // Returns new'ed data
     // Internal: Find scope
     static const VerilatedScope* scopeFind(const char* namep);
+    static const VerilatedScopeNameMap* scopeNameMap();
     // Internal: Get and set DPI context
     static const VerilatedScope* dpiScope() { return t_dpiScopep; }
     static void dpiScope(const VerilatedScope* scopep) { t_dpiScopep=scopep; }
